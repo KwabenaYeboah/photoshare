@@ -10,7 +10,7 @@
         </p>
     {% else %}
         <h1>Log In</h1>
-        <p>Enter your login details below</p>
+        <p>Enter your login details below or <a href="{% url 'signup' %}">Sign Up instead</a></p>
         <div class="login-form">
             <form action="{% url 'login' %}" method="post">{% csrf_token %}
                 {{form.as_p}}

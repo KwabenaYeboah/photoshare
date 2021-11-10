@@ -3,14 +3,14 @@ from django.urls import path, include
 from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
     PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView, PasswordResetConfirmView)
-from .views import login_view, dashboard_view
+from .views import login_view, dashboard_view, signup_view
 
 urlpatterns = [
     #path('login/', login_view, name='login'),
     #path('', include('django.contrib.auth.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-
+    path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard_view, name='dashboard'),
     
     # Password Change urls
