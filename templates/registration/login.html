@@ -20,4 +20,11 @@
             <p><a href="{% url 'password_reset' %}">Forgot Password</a></p>
         </div>
     {% endif %}
+    <div class="social">
+        <ul>
+            <li class="twitter"><a href="{% url 'social:begin' 'twitter' %}">Sign in with Twitter</a></li>
+            <li class="google"><a href="{% url "social:begin" "google-oauth2" %}">Login with Google</a></li>
+            
+        </ul>
+    </div>
 {% endblock content %}

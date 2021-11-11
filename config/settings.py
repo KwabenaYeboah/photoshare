@@ -25,7 +25,7 @@ SECRET_KEY = '9(x-is%%y^^*=c#2zn$rqcob74fdos^1ggtuksl*3dmt_(d*=p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['photoshare.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,8 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    #local app
     'accounts',
+    
+    # third party apps
+    'social_django',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -136,4 +141,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'accounts.auth.EmailAuthBackend',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2'
 ]
+
+SOCIAL_AUTH_TWITTER_KEY = ''
+SOCIAL_AUTH_TWITTER_SECRET =''
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =''
