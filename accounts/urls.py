@@ -2,8 +2,9 @@ from django.contrib.auth import logout
 from django.urls import path, include
 from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
-    PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView, PasswordResetConfirmView)
-from .views import login_view, dashboard_view, signup_view
+    PasswordResetView, PasswordResetDoneView,
+    PasswordResetCompleteView, PasswordResetConfirmView)
+from .views import login_view, dashboard_view, signup_view, user_profile_update_view
 
 urlpatterns = [
     #path('login/', login_view, name='login'),
@@ -12,6 +13,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('update/', user_profile_update_view, name='profile_update'),
     
     # Password Change urls
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
