@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #local app
     'accounts',
+    'images',
     
     # third party apps
     'social_django',
