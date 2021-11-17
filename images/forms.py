@@ -8,7 +8,7 @@ class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('title', 'url', 'description')
-        widgets = {'url':forms.HiddenInput}
+        widgets = {'url':forms.HiddenInput,}
         
         # Validate user provided url against image requirements
         def clean_url(self):
@@ -19,23 +19,18 @@ class ImageUploadForm(forms.ModelForm):
                 raise forms.ValidationError('The image extension from the URL is not supported')
             return url
         
-        # Overide ModelForm save method against image requirements
+       # Overide ModelForm save method against requirements
         def save(self, force_insert=False,
                  force_update=False, commit=True):
             image = super().save(commit=False)
             image_url = self.clean_data['url']
-            extensions = image_url.rsplit('.', 1)[1].lower()
-            image_name = slugify(image.title)
+            extension = image_url.rsplit('.', 1)[1].lower()
+            name = slugify(image.title)
+            image_name = f'{name}.{extension}'
             
-            file = request.urlopen(image_url) # Retrieve image from provided url
-            image.image.save(image_name, ContentFile(file.read()), save=False)
+            response = request.urlopen(image_url) # Retrieve image from provided url
+            image.image.save(image_name, ContentFile(response.read()), save=False)
             
-            if commit: #if commit is stll true then we save the file
+            if commit:
                 image.save()
             return image
-            
-            
-            
-        
-
-    
