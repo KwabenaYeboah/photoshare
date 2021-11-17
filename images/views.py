@@ -1,4 +1,7 @@
+from django.core import paginator
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -8,6 +11,28 @@ from django.shortcuts import get_object_or_404
 from .models import Image
 
 from .forms import ImageUploadForm
+
+# views for listing all images uploaded
+@login_required
+def image_list_view(request):
+    '''This view handles both standard and AJAX pagination'''
+    images = Image.objects.all()
+    paginator = Paginator(images, 8)
+    page = request.GET.get('page')
+    try:
+        images = paginator.page(page)
+    except PageNotAnInteger:
+        images = paginator.page(1)
+    except EmptyPage:
+        if request.is_ajax():
+            return HttpResponse('')  # return empty page if page is out of range
+        images = paginator.page(paginator.num_pages) 
+    if request.is_ajax():
+        return render (request, 'images/ajax_image_list.htm',
+                       {'section': 'images', 'images':images})
+    return render(request, 'images/image_list.html',
+                  {'section':'images', 'images': images})
+
 
 @login_required
 def upload_image_view(request):
