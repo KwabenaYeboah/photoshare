@@ -11,6 +11,7 @@ django-extensions = "==2.2.5"
 werkzeug = "==0.16.0"
 pyopenssl = "==19.0.0"
 certifi = "*"
+easy-thumbnails = "==2.7"
 
 [dev-packages]
 

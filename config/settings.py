@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # third party apps
     'social_django',
     'django_extensions',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [

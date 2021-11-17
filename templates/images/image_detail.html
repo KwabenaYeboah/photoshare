@@ -4,12 +4,12 @@
 
 {% block content %}
   <h1>{{ image.title }}</h1>
-  <img src="{{image.url }}" class="image-detail" alt="">
+  <img src="{{ image.url }}" class="image-detail" alt="">
   {% with total_image_likes=image.users.count %}
     <div class="image-info">
         <div>
-            <span class="count">
-                {{ total_image_likes }} like{{total_image_likes|pluralize}}
+            <span classs="count">
+                {{ total_image_likes }}like{{total_image_likes|pluralize}}
             </span>
         </div>
         {{ image.description|linebreaks }}
