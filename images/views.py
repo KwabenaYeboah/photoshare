@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from .models import Image
 
 from .forms import ImageUploadForm
 
@@ -23,4 +25,8 @@ def upload_image_view(request):
         form = ImageUploadForm(data=request.GET)
     return render(request, 'images/upload_image.html',
                   {'section': 'images', 'form':form})
-           
+
+def image_detail_view(request, id, slug):
+    image = get_object_or_404(Image, id=id, slug=slug)
+    return render(request, 'images/image_detail.html', {'image':image, 'section':'images', })
+    

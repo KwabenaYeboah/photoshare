@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Image(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, 
@@ -22,3 +23,8 @@ class Image(models.Model):
             self.slug = slugify(self.title)
             
         super().save(*args, **kwargs)
+        
+    #define canonical urls for objects
+    def get_absolute_url(self):
+        return reverse('image_detail', args=[self.id, self.slug])
+    
