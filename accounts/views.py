@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -27,6 +27,10 @@ def dashboard_view(request):
     return render(request, 'accounts/dashboard.html', {'section':'dashboard'})
 
 def signup_view(request):
+    # if user is already signed in, return user to dashboard page
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+        
     if request.method == 'POST':
         form = UserSignUpForm(request.POST)
         if form.is_valid():
