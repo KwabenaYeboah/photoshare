@@ -4,7 +4,9 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
     PasswordResetView, PasswordResetDoneView,
     PasswordResetCompleteView, PasswordResetConfirmView)
-from .views import login_view, dashboard_view, signup_view, user_profile_update_view
+from .views import (login_view, dashboard_view, signup_view,
+                    user_profile_update_view, user_detail_view, user_list_view,
+                    follow_user_view)
 
 urlpatterns = [
     #path('login/', login_view, name='login'),
@@ -13,6 +15,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('users/', user_list_view, name='user_list'),
+    path('user/follow', follow_user_view, name='follow_user'),
+    path('user/<username>/', user_detail_view, name='user_detail'),
     path('update/', user_profile_update_view, name='profile_update'),
     
     # Password Change urls
