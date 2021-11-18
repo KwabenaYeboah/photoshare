@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     #local app
     'accounts',
     'images',
+    'feeds',
     
     # third party apps
     'social_django',
