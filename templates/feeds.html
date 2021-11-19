@@ -1,0 +1,41 @@
+{% load thumbnail %}
+
+{% with user=activity.user profile=activity.user.profile %}
+<div class="action">
+  <div class="images">
+    {% if profile.image %}
+      {% thumbnail user.profile.image "80x80" crop="100%" as image %}
+      <a href="{{ user.get_absolute_url }}">
+        <img src="{{ image.url }}" alt="{{ user.get_full_name }}"
+         class="item-img">
+      </a>
+    {% endif %}
+
+    {% if activity.target %}
+      {% with target=activity.target %}
+        {% if target.image %}
+          {% thumbnail target.image "80x80" crop="100%" as im %}
+          <a href="{{ target.get_absolute_url }}">
+            <img src="{{ im.url }}" class="item-img">
+          </a>
+        {% endif %}
+      {% endwith %}
+    {% endif %}
+  </div>
+  <div class="info">
+    <p>
+      <span class="date">{{ activity.created|timesince }} ago</span>
+      <br />
+      <a href="{{ user.get_absolute_url }}">
+        {{ user.first_name }}
+      </a>
+      {{ activity.activity }}
+      {% if activity.target %}
+        {% with target=activity.target %}
+          <a href="{{ target.get_absolute_url }}">{{ target }}</a>
+        {% endwith %}
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endwith %}

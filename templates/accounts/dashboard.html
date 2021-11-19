@@ -16,4 +16,11 @@
     <a href="{% url 'profile_update' %}">Update Profile</a> or 
     <a href="{% url 'password_change' %}">Change Password</a>
   </p>
+  <h2>Latest Updates</h2>
+  <div id="action-list">
+    {% for activity in activities %}
+      {% include 'feeds.html' %}
+    {% endfor %}
+
+  </div>
 {% endblock content %}

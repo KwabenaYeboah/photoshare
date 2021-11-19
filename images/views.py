@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from feeds.utils import create_feed
 from django.views.decorators.http import require_POST
 from decorators.decorators import ajax_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+
 from .models import Image
 
 from .forms import ImageUploadForm
@@ -42,6 +44,7 @@ def upload_image_view(request):
             new_image = form.save(commit=False)
             new_image.author = request.user   # Assgin current login user to the upload
             new_image.save()
+            create_feed(request.user, 'Uploaded image', new_image)
             messages.success(request, 'Image uploaded successfully')
             
             #Redirect user to image detail_url
@@ -69,6 +72,7 @@ def like_image_view(request):
             image = Image.objects.get(id=image_id)
             if action == 'like':
                 image.users.add(request.user)
+                create_feed(request.user, 'likes', image)
             else:
                 image.users.remove(request.user)
             return JsonResponse({'status':'ok'})

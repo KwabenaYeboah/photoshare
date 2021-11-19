@@ -6,9 +6,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+
+from feeds.utils import create_feed
 from decorators.decorators import ajax_required
 from .forms import LoginForm, UserSignUpForm, UserUpdateForm, ProfileUpdateForm
 from .models import Profile, Follow
+from feeds.models import Feed
 
 def login_view(request):
     if request.method == 'POST':
@@ -28,7 +31,14 @@ def login_view(request):
     
 @login_required
 def dashboard_view(request):
-    return render(request, 'accounts/dashboard.html', {'section':'dashboard'})
+    activities = Feed.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        # Retrieve activities of other users 
+        activities = activities.filter(user_id__in=following_ids)
+    activities = activities.select_related('user', 'user__profile').prefetch_related('target')[:8]
+    return render(request, 'accounts/dashboard.html',
+                  {'section':'dashboard', 'activities':activities})
 
 def signup_view(request):
     # if user is already signed in, return user to dashboard page
@@ -42,6 +52,7 @@ def signup_view(request):
             user.set_password(form.cleaned_data['password']) 
             user.save()
             Profile.objects.create(user=user)
+            create_feed(user, 'has created an account') #This activity will appear in user feed
             return render(request, 'accounts/signup_complete.html', {'user':user})
     
     form = UserSignUpForm()
@@ -89,6 +100,7 @@ def follow_user_view(request):
             user = User.objects.get(id=user_id)
             if action == 'follow':
                 Follow.objects.get_or_create(this_user=request.user, that_user=user)
+                create_feed(request.user, 'is following', user)
             else:
                 Follow.objects.filter(this_user=request.user, that_user=user).delete()
             return JsonResponse({'status': 'ok'})

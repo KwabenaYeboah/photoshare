@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Feed
+
+@admin.register(Feed)
+class FeedAdmin(admin.ModelAdmin):
+    list_display = ('user', 'activity', 'target', 'created')
+    list_filter = ('created',)
+    search_fields = ('verb',)
+    
