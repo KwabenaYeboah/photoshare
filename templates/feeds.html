@@ -14,9 +14,9 @@
     {% if activity.target %}
       {% with target=activity.target %}
         {% if target.image %}
-          {% thumbnail target.image "80x80" crop="100%" as im %}
+          {% thumbnail target.image "80x80" crop="100%" as image %}
           <a href="{{ target.get_absolute_url }}">
-            <img src="{{ im.url }}" class="item-img">
+            <img src="{{ image }}" class="item-img">
           </a>
         {% endif %}
       {% endwith %}
