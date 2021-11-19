@@ -158,3 +158,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =''
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda user: reverse_lazy('user_detail', args=[user.username])
 }
+
+# Redis Config
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0

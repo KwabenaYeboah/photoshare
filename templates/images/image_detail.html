@@ -6,19 +6,23 @@
   <h1>{{ image.title }}</h1>
   <img src="{{ image.url }}" class="image-detail" alt="">
   {% with total_image_likes=image.users.count  image_likers=image.users.all%}
-    <div class="image-info">
-        <div>
-            <span class="count">
-                <span class="total">{{ total_image_likes }}</span> like{{total_image_likes|pluralize}}
-            </span>
-            <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in image_likers %}un{% endif %}like" class="like button">
-                {% if request.user not in image_likers %}
-                  Like
-                {% else %}
-                  Unlike
-                {% endif %}
-            </a>
-        </div>
+  <div class="image-info">
+    <div>
+      <span class="count">
+        <span class="total">{{ total_image_likes }}</span>
+        like{{ total_image_likes|pluralize }}
+      </span>
+      <span class="count">
+        {{ total_image_views }} view{{ total_image_views|pluralize }}
+      </span>
+        <a href="#" data-id="{{ image.id }}" data-action="{% if request.user in image_likers %}un{% endif %}like" class="like button">
+            {% if request.user not in image_likers %}
+              Like
+            {% else %}
+              Unlike
+            {% endif %}
+        </a>
+    </div>
         {{ image.description|linebreaks }}
     </div>
     <div class="image-likes">

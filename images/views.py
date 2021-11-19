@@ -8,10 +8,18 @@ from django.views.decorators.http import require_POST
 from decorators.decorators import ajax_required
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
+import redis
+from django.conf import settings
 
 from .models import Image
 
 from .forms import ImageUploadForm
+
+# connecting the redis server
+r = redis.Redis(host=settings.REDIS_HOST, 
+                port=settings.REDIS_PORT,
+                db=settings.REDIS_DB)
+
 
 # views for listing all images uploaded
 @login_required
@@ -58,7 +66,22 @@ def upload_image_view(request):
 @login_required
 def image_detail_view(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
-    return render(request, 'images/image_detail.html', {'image':image, 'section':'images', })
+    #increment image view by 1
+    total_image_views = r.incr(f'image:{image.id}:views')
+    #rank most image viewed
+    r.zincrby('image_ranking',1, image.id)
+    return render(request, 'images/image_detail.html', {'image':image, 'section':'images',
+                                                        'total_image_views': total_image_views})
+
+# view for Ranking of the most viewed images
+def image_ranking_view(request):
+    #get image ranking dicitonary
+    image_ranking = r.zrange('image_ranking', 0, -1, desc=True)[:8]
+    image_ranking_ids = [int(id) for id in image_ranking]
+    most_images_viewed = list(Image.objects.filter(id__in=image_ranking_ids))
+    most_images_viewed.sort(key=lambda index: image_ranking_ids.index(index.id))
+    return render(request, 'ranking.html',
+                  {'most_images_viewed':most_images_viewed})
 
 #view for liking an image
 @ajax_required
@@ -79,3 +102,4 @@ def like_image_view(request):
         except:
             pass
     return JsonResponse({'status':'error'})
+
