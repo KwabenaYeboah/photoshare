@@ -22,6 +22,7 @@ An image-sharing application that allows users to share images(a mini Instagram)
 <h2 id="feat">Features</h2>
 <ul>
   <li>User Registration and Authentication</li>
+  <li>Social Authentication</li>
   <li>Image upload functionality</li>
   <li>A Follow System</li>
   <li>User Profile</li>
@@ -39,6 +40,7 @@ An image-sharing application that allows users to share images(a mini Instagram)
   <li>CSS3</li>
   <li>Boostrap4</li>
   <li>Django Signals</li>
+  <li>Docker</li>
   <li>Redis</li>
   <li>jQuery</li>
 </ul>
@@ -50,12 +52,12 @@ To run the application, please follow guidlines below
  <ul>
   <li>You need a PC or Macbook</li>
   <li>You have Git installed</li>
+  <li>You have Docker installed on your Machine</li>
   <li>A Text Editor or IDE(eg.Vscode, Sublime, Pycharm)</li>
 </ul></p>
 <p>2. Install python3 and Pipenv</p>
 
 <p>3. Now you setup as indicated below:</p>
-
 
  ```
   # Clone this repository into the directory of your choice
@@ -64,26 +66,20 @@ To run the application, please follow guidlines below
   # Move into project folder
   $ cd photoshare
   
-  # Install from Pipfile
-  $ pipenv install
+  # Build the image and run the container(This will also start the server)
+  $ docker-compose up -d --build
   
   # Migrate database models
-  (photohare-xxx) $ python manage.py migrate
+  $ docker-compose exec web python manage.py migrate
   
   # Create superuser account
-  (photoshare-XXXX) $ python manage.py createsuperuser
-  
-  # start server
-  (photoshare-XXXX) $  python manage.py runserver
-  
-  # Copy the IP address provided once your server is up and running. (you will see something like >> Serving at 127.0.0.1....).
+  $ docker-compose exec web python manage.py createsuperuser
   
   # Open the address in the browser
-  >>> http://127.0.0.1:XXXX/
-  
+  >>> http://127.0.0.1:8000/
   
   # Django Admin
-  >>> http://127.0.0.1:XXXX/admin/
+  >>> http://127.0.0.1:8000/admin/
   ```
 
 <h2 id="status">Project Status</h2>
