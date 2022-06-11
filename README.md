@@ -83,7 +83,7 @@ To run the application, please follow guidlines below
   ```
 
 <h2 id="status">Project Status</h2>
-Project is: In Progress
+Project is: Done
 
 <h2 id="contribute">Contributing</h2>
 Pull requests and stars are always welcome
